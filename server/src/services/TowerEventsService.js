@@ -1,9 +1,10 @@
 import { dbContext } from "../db/DbContext.js"
 
 class TowerEventsService {
-    async createTowerEvent() {
-        const event = await dbContext.TowerEvent.create('api/events')
+    async createTowerEvent(towerEventData) {
+        const event = await dbContext.TowerEvents.create(towerEventData)
         await event.populate('creator', 'name picture')
+
         return event
     }
 }
