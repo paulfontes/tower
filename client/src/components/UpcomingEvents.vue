@@ -24,19 +24,20 @@ async function getEvents() {
 
 
 <template>
-
     <div v-for="event in events" class="col-4">
-        <div class="card">
-            <div class="card-img-top">
-                <img :src="event.coverImg" alt="this is a picture of the event" class="img-fluid events-img">
+        <RouterLink :to="{ name: 'Event' }">
+            <div class="card">
+                <div class="card-img-top">
+                    <img :src="event.coverImg" alt="this is a picture of the event" class="img-fluid events-img">
+                </div>
+                <div class="card-body">
+                    <b>{{ event.name }}</b>
+                    <p class="text-success fw-medium mb-0">Hosted by {{ event.creator.name }}</p>
+                    <p class="mb-0"> {{ event.startDate }} - {{ event.location }}</p>
+                    <p class="mb-0">125 attending</p>
+                </div>
             </div>
-            <div class="card-body">
-                <b>{{ event.name }}</b>
-                <p class="text-success fw-medium mb-0">Hosted by {{ event.creator.name }}</p>
-                <p class="mb-0"> {{ event.startDate }} - {{ event.location }}</p>
-                <p class="mb-0">125 attending</p>
-            </div>
-        </div>
+        </RouterLink>
     </div>
 </template>
 

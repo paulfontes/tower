@@ -86,9 +86,9 @@ import UpcomingEvents from '@/components/UpcomingEvents.vue';
       </div>
     </section>
   </main>
-  <section class="container">
+  <section class="container mt-5">
     <h3>Explore top catagories</h3>
-    <section class="row g-3">
+    <section class="row g-3 mt-2">
       <UpcomingEvents />
     </section>
   </section>
