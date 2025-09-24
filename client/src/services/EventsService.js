@@ -10,6 +10,9 @@ class EventsService {
         logger.log('getting events', events)
         AppState.towerEvent = events
     }
+    createEvent() {
+
+    }
 
 }
 

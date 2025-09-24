@@ -1,4 +1,5 @@
 <script setup>
+import EventForm from '@/components/EventForm.vue';
 import UpcomingEvents from '@/components/UpcomingEvents.vue';
 
 
@@ -35,7 +36,7 @@ import UpcomingEvents from '@/components/UpcomingEvents.vue';
           <div class="card-body">
             <h5> <i class="mdi mdi-plus"></i> Start an event to invite your friends</h5>
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod odit quam nihil beatae laudantium.</p>
-            <a href="">Create an event</a>
+            <EventForm />
           </div>
         </div>
       </div>
