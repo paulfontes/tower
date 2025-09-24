@@ -10,8 +10,11 @@ class EventsService {
         logger.log('getting events', events)
         AppState.towerEvent = events
     }
-    createEvent() {
-
+    async createEvent(eventData) {
+        const response = await api.post('api/events', eventData)
+        const newEvent = new TowerEvent(response.data)
+        AppState.towerEvent.unshift(newEvent)
+        return newEvent
     }
 
 }

@@ -1,7 +1,12 @@
 <script setup>
+import { AppState } from '@/AppState.js';
 import EventForm from '@/components/EventForm.vue';
+import FilterEvents from '@/components/FilterEvents.vue';
 import UpcomingEvents from '@/components/UpcomingEvents.vue';
+import { computed } from 'vue';
 
+
+const account = computed(() => AppState.account)
 
 
 
@@ -43,53 +48,12 @@ import UpcomingEvents from '@/components/UpcomingEvents.vue';
     </section>
   </main>
   <main class="container mt-5">
-    <h3>Explore top catagories</h3>
-    <section class="row justify-content-center mt-2">
-      <div class="col-2 text-center">
-        <div class="card">
-          <div class="card-body p-0 m-0">
-            <span class=""><i class="mdi mdi-all-inclusive"></i></span>
-            <p>All</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-2 text-center">
-        <div class="card">
-          <div class="card-body p-0 m-0">
-            <span class=""><i class="mdi mdi-guitar-electric"></i></span>
-            <p>Concerts</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-2 text-center">
-        <div class="card">
-          <div class="card-body p-0 m-0">
-            <span class=""><i class="mdi mdi-account-group"></i></span>
-            <p>Conventions</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-2 text-center">
-        <div class="card">
-          <div class="card-body p-0 m-0">
-            <span class=""><i class="mdi mdi-soccer"></i></span>
-            <p>Sports</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-2 text-center">
-        <div class="card">
-          <div class="card-body p-0 m-0">
-            <span class=""><i class="mdi mdi-monitor"></i></span>
-            <p>Digital</p>
-          </div>
-        </div>
-      </div>
-    </section>
+    <h3>Explore top categories</h3>
+    <FilterEvents />
   </main>
   <section class="container mt-5">
     <h3>Explore top catagories</h3>
-    <section class="row g-3 mt-2">
+    <section v-if="account" class="row g-3 mt-2">
       <UpcomingEvents />
     </section>
   </section>

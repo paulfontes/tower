@@ -6,6 +6,7 @@ import { Pop } from '@/utils/Pop.js';
 import { computed, onMounted } from 'vue';
 
 const events = computed(() => AppState.towerEvent)
+const account = computed(() => AppState.account)
 
 onMounted(() => getEvents())
 
@@ -25,7 +26,7 @@ async function getEvents() {
 
 <template>
     <div v-for="event in events" class="col-4">
-        <RouterLink :to="{ name: 'Event' }">
+        <RouterLink :to="{ name: 'Event', params: { eventId: event.id } }">
             <div class="card">
                 <div class="card-img-top">
                     <img :src="event.coverImg" alt="this is a picture of the event" class="img-fluid events-img">
