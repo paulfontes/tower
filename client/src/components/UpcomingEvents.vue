@@ -1,31 +1,23 @@
 <script setup>
 import { AppState } from '@/AppState.js';
+import { TowerEvent } from '@/models/TowerEvent.js';
 import { eventsService } from '@/services/EventsService.js';
 import { logger } from '@/utils/Logger.js';
 import { Pop } from '@/utils/Pop.js';
 import { computed, onMounted } from 'vue';
 
-const events = computed(() => AppState.towerEvent)
-const account = computed(() => AppState.account)
 
-onMounted(() => getEvents())
 
-async function getEvents() {
-    try {
+const props = defineProps({
+    event: { type: TowerEvent, required: true }
+})
 
-        await eventsService.getEvents()
-    }
-    catch (error) {
-        Pop.error(error);
-        logger.log("Couldn't get upcoming events!", error)
-    }
-}
 
 </script>
 
 
 <template>
-    <div v-for="event in events" class="col-4">
+    <div class="col-4">
         <RouterLink :to="{ name: 'Event', params: { eventId: event.id } }">
             <div class="card">
                 <div class="card-img-top">

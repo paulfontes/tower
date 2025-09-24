@@ -3,11 +3,54 @@ import { AppState } from '@/AppState.js';
 import EventForm from '@/components/EventForm.vue';
 import FilterEvents from '@/components/FilterEvents.vue';
 import UpcomingEvents from '@/components/UpcomingEvents.vue';
-import { computed } from 'vue';
+import { eventsService } from '@/services/EventsService.js';
+import { logger } from '@/utils/Logger.js';
+import { Pop } from '@/utils/Pop.js';
+import { computed, onMounted, ref } from 'vue';
 
+const selectedCategory = ref('all')
 
 const account = computed(() => AppState.account)
+const events = computed(() => {
 
+  if (selectedCategory.value == 'all') {
+    return AppState.towerEvent
+  }
+
+  return AppState.towerEvent.filter(event => event.type == selectedCategory.value)
+})
+
+
+const categories = [
+  {
+    name: 'all'
+  },
+  {
+    name: 'concert'
+  },
+  {
+    name: 'convention'
+  },
+  {
+    name: 'sport'
+  },
+  {
+    name: 'digital'
+  },
+]
+
+onMounted(() => getEvents())
+
+async function getEvents() {
+  try {
+
+    await eventsService.getEvents()
+  }
+  catch (error) {
+    Pop.error(error);
+    logger.log("Couldn't get upcoming events!", error)
+  }
+}
 
 
 </script>
@@ -49,12 +92,20 @@ const account = computed(() => AppState.account)
   </main>
   <main class="container mt-5">
     <h3>Explore top categories</h3>
-    <FilterEvents />
+    <section class="row justify-content-center mt-2">
+      <div v-for="category in categories" :key="category.name" class="col-2 text-center">
+        <div class="card">
+          <div @click="selectedCategory = category.name" class="card-body p-0 m-0" role="button">
+            <b class="text-capitalize">{{ category.name }}</b>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
   <section class="container mt-5">
-    <h3>Explore top catagories</h3>
+    <h3>Upcoming Events</h3>
     <section v-if="account" class="row g-3 mt-2">
-      <UpcomingEvents />
+      <UpcomingEvents v-for="event in events" :key="event.id" :event="event" />
     </section>
   </section>
 </template>
