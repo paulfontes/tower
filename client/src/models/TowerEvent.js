@@ -6,7 +6,10 @@ export class TowerEvent {
         this.coverImg = data.coverImg
         this.location = data.location
         this.capacity = data.capacity
-        this.startDate = data.startDate
+        this.startDate = new Date(data.startDate).toLocaleDateString('en', {
+            month: 'short',
+            day: '2-digit'
+        })
         this.isCanceled = data.isCanceled
         this.type = data.type
         this.creator = data.creator
