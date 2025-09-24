@@ -14,11 +14,29 @@ class TowerEventsService {
     async getEventById(eventId) {
         const eventById = await dbContext.TowerEvents.findById(eventId).populate('creator', 'name picture')
 
-        // if (eventById == null) {
-        //     throw new Error('There was no event by that Id')
-        // }
+        if (eventById == null) {
+            throw new Error('There was no event by that Id')
+        }
 
         return eventById
+    }
+    async editEvent(eventId, updateData) {
+        const editEvent = await dbContext.TowerEvents.findByIdAndUpdate(eventId, updateData)
+
+        if (editEvent == null) {
+            throw new Error(`Invalid Event Id: ${eventId}`)
+        }
+
+        await editEvent.save()
+        return editEvent
+    }
+    async cancelEvent(eventId) {
+        const event = await this.editEvent(eventId)
+
+        event.isCanceled = !event.isCanceled
+
+        await event.save()
+        return event
     }
 }
 
