@@ -6,9 +6,11 @@ import { TowerEvent } from "@/models/TowerEvent.js"
 class EventsService {
     async cancelEvent(eventId) {
         const response = await api.delete(`api/events/${eventId}`)
-        const index = AppState.towerEvent.findIndex(e => e.id == eventId)
-        AppState.towerEvent.splice(index)
-        logger.log(AppState.towerEvent)
+        const event = new TowerEvent(response.data)
+        AppState.activeEvent = event
+        // const index = AppState.towerEvent.findIndex(e => e.id == eventId)
+        // AppState.towerEvent.splice(index)
+        // logger.log(AppState.towerEvent)
     }
     async getEvents() {
         const response = await api.get('api/events')

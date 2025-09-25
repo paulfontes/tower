@@ -34,7 +34,7 @@ class TowerEventsService {
         return originalEvent
     }
     async cancelEvent(eventId) {
-        const event = await this.editEvent(eventId)
+        const event = await dbContext.TowerEvents.findById(eventId)
 
         event.isCanceled = !event.isCanceled
 

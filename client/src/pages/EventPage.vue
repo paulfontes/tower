@@ -9,7 +9,8 @@ import { useRoute } from 'vue-router';
 
 const route = useRoute()
 
-// const events = computed(() => AppState.towerEvent)
+const account = computed(() => AppState.account)
+
 const event = computed(() => AppState.activeEvent)
 
 onMounted(() => getEventById())
@@ -55,7 +56,10 @@ async function cancelEvent() {
                         <span class="bg bg-primary rounded p-1">{{ event.type }}</span>
                     </div>
                     <div class="col-6 text-end mt-2">
-                        <button @click="cancelEvent()" class="btn btn-outline-red">Cancel Event</button>
+                        <button v-if="event.creatorId == account?.id" @click="cancelEvent()"
+                            class="btn btn-outline-red">
+                            {{ event.isCanceled ? 'Continue Event' : 'Cancel Event' }}
+                        </button>
                     </div>
                     <div class="col-8">
                         <p>{{ event.description }}</p>
