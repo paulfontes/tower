@@ -7,14 +7,14 @@ export class AccountController extends BaseController {
   constructor() {
     super('account')
     this.router
-      .get('/tickets', this.getMyTickets)
       .use(Auth0Provider.getAuthorizedUserInfo)
+      .get('/tickets', this.getMyTickets)
       .get('', this.getUserAccount)
       .put('', this.editUserAccount)
   }
   async getMyTickets(request, response, next) {
     try {
-      const userId = request.userInfo.Id
+      const userId = request.userInfo.id
       const tickets = await ticketsService.getTicketsByAccountId(userId)
       response.send(tickets)
     } catch (error) {
