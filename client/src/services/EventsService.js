@@ -4,6 +4,9 @@ import { AppState } from "@/AppState.js"
 import { TowerEvent } from "@/models/TowerEvent.js"
 
 class EventsService {
+    cancelEvent(eventId) {
+        throw new Error('Method not implemented.')
+    }
     async getEvents() {
         const response = await api.get('api/events')
         const events = response.data.map(e => new TowerEvent(e))
