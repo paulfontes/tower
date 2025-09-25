@@ -1,7 +1,6 @@
 <script setup>
 import { AppState } from '@/AppState.js';
 import EventForm from '@/components/EventForm.vue';
-import FilterEvents from '@/components/FilterEvents.vue';
 import UpcomingEvents from '@/components/UpcomingEvents.vue';
 import { eventsService } from '@/services/EventsService.js';
 import { logger } from '@/utils/Logger.js';

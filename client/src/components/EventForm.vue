@@ -6,7 +6,6 @@ import { logger } from '@/utils/Logger.js';
 import { eventsService } from '@/services/EventsService.js';
 import { useRouter } from 'vue-router';
 import { Modal } from 'bootstrap';
-import { TowerEvent } from '@/models/TowerEvent.js';
 import { AppState } from '@/AppState.js';
 
 const account = computed(() => AppState.account)
