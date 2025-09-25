@@ -13,6 +13,7 @@ const route = useRoute()
 const account = computed(() => AppState.account)
 const tickets = computed(() => AppState.ticketProfile)
 const event = computed(() => AppState.activeEvent)
+const isGoing = computed(() => tickets.value.some(ticket => ticket.accountId == account.value?.id))
 
 onMounted(() => {
 
@@ -52,8 +53,13 @@ async function getTicketsByEventId() {
 
 async function createTicket() {
     try {
+        if (event.value.ticketCount == event.value.capacity) {
+            return Pop.toast('Event is full!')
+        }
         const ticketData = { eventId: route.params.eventId }
         await ticketsService.createTicket(ticketData)
+        event.value.capacity -= event.value.ticketCount
+        return event.value.capacity
     }
     catch (error) {
         Pop.error(error);
@@ -62,10 +68,6 @@ async function createTicket() {
 }
 
 
-
-// function ticketCounter() {
-//     event.value.ticketCount -= event.value.capacity
-// }
 
 
 
@@ -101,11 +103,15 @@ async function createTicket() {
                             <div class="card-body">
                                 <p class="mb-0">Interested in going?</p>
                                 <p>Grab a ticket!</p>
-                                <button @click="createTicket()" class="btn btn-primary w-75">Attend</button>
+                                <div v-if="isGoing">
+                                    <b>You are Attending!</b>
+                                </div>
+                                <button v-else-if="account" @click="createTicket()"
+                                    class="btn btn-primary w-75">Attend</button>
                             </div>
                         </div>
                         <div class="text-end">
-                            <p> {{ event.ticketCount }} spots left</p>
+                            <p> {{ event.capacity }} spots left</p>
                         </div>
                     </div>
                     <div class="d-flex justify-content-between">
@@ -114,34 +120,38 @@ async function createTicket() {
                             <p> <i class="mdi mdi-calendar"></i> Starts {{ event.startDate }}</p>
                             <b>Location</b>
                             <p><i class="mdi mdi-map-marker-plus"></i> {{ event.location }}</p>
+                            <div class="col-7">
+                                <p>See what folks are saying...</p>
+                                <div class="card">
+                                    <div class="card-body text-end">
+                                        <textarea class="w-100" name="" id=""
+                                            placeholder="Tell the people..."></textarea>
+                                        <button>Post Comment</button>
+                                    </div>
+                                    <section class="row">
+                                        <div class="col-12">
+                                            <div class="card m-2">
+                                                <div class="card-body"></div>
+                                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima
+                                                    repellat
+                                                    quo
+                                                    totam! Unde, architecto! </p>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-3 text-center">
-                            <b>Attendees</b>
-                            <div class="card">
-                                <div v-for="ticket in tickets" :key="ticket.id" class="card-body">
-                                    <img :src="ticket.profile.picture" alt="" class="profile-img">
-                                    <p>{{ ticket.profile.name }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-7">
-                        <p>See what folks are saying...</p>
-                        <div class="card">
-                            <div class="card-body text-end">
-                                <textarea class="w-100" name="" id="" placeholder="Tell the people..."></textarea>
-                                <button>Post Comment</button>
-                            </div>
-                            <section class="row">
-                                <div class="col-12">
-                                    <div class="card m-2">
-                                        <div class="card-body"></div>
-                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima repellat
-                                            quo
-                                            totam! Unde, architecto! </p>
+                            <div class="row">
+                                <b>Attendees</b>
+                                <div class="card">
+                                    <div v-for="ticket in tickets" :key="ticket.id" class="card-body">
+                                        <img :src="ticket.profile.picture" alt="" class="profile-img">
+                                        <p>{{ ticket.profile.name }}</p>
                                     </div>
                                 </div>
-                            </section>
+                            </div>
                         </div>
                     </div>
                 </section>

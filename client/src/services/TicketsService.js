@@ -7,6 +7,7 @@ class TicketsService {
     async createTicket(ticketData) {
         const response = await api.post('api/tickets', ticketData)
         const ticket = new TicketProfile(response.data)
+        AppState.ticketProfile.push(ticket)
         AppState.activeEvent.ticketCount++
     }
     async getTicketsByEventId(eventId) {
