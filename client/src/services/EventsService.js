@@ -4,8 +4,11 @@ import { AppState } from "@/AppState.js"
 import { TowerEvent } from "@/models/TowerEvent.js"
 
 class EventsService {
-    cancelEvent(eventId) {
-        throw new Error('Method not implemented.')
+    async cancelEvent(eventId) {
+        const response = await api.delete(`api/events/${eventId}`)
+        const index = AppState.towerEvent.findIndex(e => e.id == eventId)
+        AppState.towerEvent.splice(index)
+        logger.log(AppState.towerEvent)
     }
     async getEvents() {
         const response = await api.get('api/events')
@@ -18,6 +21,11 @@ class EventsService {
         const newEvent = new TowerEvent(response.data)
         AppState.towerEvent.unshift(newEvent)
         return newEvent
+    }
+    async getEventById(eventId) {
+        const response = await api.get(`api/events/${eventId}`)
+        const event = new TowerEvent(response.data)
+        AppState.activeEvent = event
     }
 
 }

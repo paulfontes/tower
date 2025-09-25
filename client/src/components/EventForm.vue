@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import ModalWrapper from './ModalWrapper.vue';
 import { Pop } from '@/utils/Pop.js';
 import { logger } from '@/utils/Logger.js';
@@ -12,7 +12,9 @@ const account = computed(() => AppState.account)
 
 const router = useRouter()
 
-const catagories = ['concert', 'convention', 'sport', 'digital']
+
+
+const categories = ['concert', 'convention', 'sport', 'digital']
 
 const editableEventData = ref({
     name: '',
@@ -60,7 +62,7 @@ async function createEvent() {
                 <select v-model="editableEventData.type" class="form-select" aria-label="Default select example"
                     id="event-type" name="event-type" required>
                     <option selected disabled value="">Select a category</option>
-                    <option v-for="category in catagories" :key="category" :value="category">
+                    <option v-for="category in categories" :key="category" :value="category">
                         {{ category }}
                     </option>
                 </select>

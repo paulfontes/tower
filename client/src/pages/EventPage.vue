@@ -9,9 +9,22 @@ import { useRoute } from 'vue-router';
 
 const route = useRoute()
 
-const events = computed(() => AppState.towerEvent)
+// const events = computed(() => AppState.towerEvent)
+const event = computed(() => AppState.activeEvent)
 
-async function cancelEvent(eventId) {
+onMounted(() => getEventById())
+
+async function getEventById() {
+    try {
+        await eventsService.getEventById(route.params.eventId)
+    }
+    catch (error) {
+        Pop.error(error);
+        logger.log("Couldn't get event by Id", error)
+    }
+}
+
+async function cancelEvent() {
     try {
         await eventsService.cancelEvent(route.params.eventId)
     }
@@ -22,84 +35,85 @@ async function cancelEvent(eventId) {
 }
 
 
+
 </script>
 
 
 <template>
     <article class="container">
         <section class="row">
-            <div v-for="event in events" :key="event.id">
-                <div v-if="route.params.eventId == event.id">
-                    <div class="col-12">
-                        <img :src="event.coverImg" alt="" class="img-fluid active-event-img rounded mt-5">
+            <!-- <div v-for="event in event" :key="event.id"> -->
+            <div v-if="event">
+                <div class="col-12">
+                    <img :src="event.coverImg" alt="" class="img-fluid active-event-img rounded mt-5">
+                </div>
+                <section class="row justify">
+                    <div class="col-3">
+                        <h2>{{ event.name }}</h2>
                     </div>
-                    <section class="row justify">
-                        <div class="col-2">
-                            <h2>{{ event.name }}</h2>
+                    <div class="col-2 text-center mt-2">
+                        <span class="bg bg-primary rounded p-1">{{ event.type }}</span>
+                    </div>
+                    <div class="col-6 text-end mt-2">
+                        <button @click="cancelEvent()" class="btn btn-outline-red">Cancel Event</button>
+                    </div>
+                    <div class="col-8">
+                        <p>{{ event.description }}</p>
+                    </div>
+                    <div class="col-4 pt-5 text-center">
+                        <div class="card">
+                            <div class="card-body">
+                                <p class="mb-0">Interested in going?</p>
+                                <p>Grab a ticket!</p>
+                                <button class="btn btn-primary w-75">Attend</button>
+                            </div>
                         </div>
-                        <div class="col-2 ms-5">
-                            <span class="bg bg-primary rounded p-0">{{ event.type }}</span>
+                        <div class="text-end">
+                            <p>{{ event.capacity }} spots left</p>
                         </div>
-                        <div class="col-6 text-end mt-2">
-                            <button @click="cancelEvent(event.id)" class="btn btn-outline-red">Cancel Event</button>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <div class="col-5">
+                            <b>Date and Time</b>
+                            <p> <i class="mdi mdi-calendar"></i> Starts {{ event.startDate }}</p>
+                            <b>Location</b>
+                            <p><i class="mdi mdi-map-marker-plus"></i> {{ event.location }}</p>
                         </div>
-                        <div class="col-8">
-                            <p>{{ event.description }}</p>
-                        </div>
-                        <div class="col-4 pt-5 text-center">
+                        <div class="col-5 text-end">
+                            <b>Attendees</b>
                             <div class="card">
                                 <div class="card-body">
-                                    <p class="mb-0">Interested in going?</p>
-                                    <p>Grab a ticket!</p>
-                                    <button class="btn btn-primary w-75">Attend</button>
+                                    <p> Joe Bob</p>
+                                    <p> Bob Joe</p>
+                                    <p> Jok Mok</p>
+                                    <p> Lok Slo</p>
                                 </div>
                             </div>
-                            <div class="text-end">
-                                <p>{{ event.capacity }} spots left</p>
-                            </div>
                         </div>
-                        <div class="d-flex justify-content-between">
-                            <div class="col-5">
-                                <p>Date and Time</p>
-                                <p> <i class="mdi mdi-calendar"></i> Starts {{ event.startDate }}</p>
-                                <p>Location</p>
-                                <p><i class="mdi mdi-map-marker-plus"></i> {{ event.location }}</p>
+                    </div>
+                    <div class="col-7">
+                        <p>See what folks are saying...</p>
+                        <div class="card">
+                            <div class="card-body text-end">
+                                <textarea class="w-100" name="" id="" placeholder="Tell the people..."></textarea>
+                                <button>Post Comment</button>
                             </div>
-                            <div class="col-5 text-end">
-                                <p>Attendees</p>
-                                <div class="card">
-                                    <div class="card-body">
-                                        <p> Joe Bob</p>
-                                        <p> Bob Joe</p>
-                                        <p> Jok Mok</p>
-                                        <p> Lok Slo</p>
+                            <section class="row">
+                                <div class="col-12">
+                                    <div class="card m-2">
+                                        <div class="card-body"></div>
+                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima repellat
+                                            quo
+                                            totam! Unde, architecto! </p>
                                     </div>
                                 </div>
-                            </div>
+                            </section>
                         </div>
-                        <div class="col-7">
-                            <p>See what folks are saying...</p>
-                            <div class="card">
-                                <div class="card-body text-end">
-                                    <textarea class="w-100" name="" id="" placeholder="Tell the people..."></textarea>
-                                    <button>Post Comment</button>
-                                </div>
-                                <section class="row">
-                                    <div class="col-12">
-                                        <div class="card m-2">
-                                            <div class="card-body"></div>
-                                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima repellat
-                                                quo
-                                                totam! Unde, architecto! </p>
-                                        </div>
-                                    </div>
-                                </section>
-                            </div>
-                        </div>
-                    </section>
+                    </div>
+                </section>
 
-                </div>
             </div>
+            <!-- </div> -->
         </section>
     </article>
 </template>
