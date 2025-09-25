@@ -21,14 +21,17 @@ class TowerEventsService {
         return eventById
     }
     async editEvent(eventId, updateData) {
-        const editEvent = await dbContext.TowerEvents.findByIdAndUpdate(eventId, updateData)
+        const originalEvent = await dbContext.TowerEvents.findById(eventId)
 
-        if (editEvent == null) {
+        if (originalEvent == null) {
             throw new Error(`Invalid Event Id: ${eventId}`)
         }
+        originalEvent.description = updateData.description || originalEvent.description
 
-        await editEvent.save()
-        return editEvent
+        originalEvent.name = updateData.name ?? originalEvent.name
+
+        await originalEvent.save()
+        return originalEvent
     }
     async cancelEvent(eventId) {
         const event = await this.editEvent(eventId)
