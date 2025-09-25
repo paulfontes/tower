@@ -1,6 +1,7 @@
 <script setup>
 import { AppState } from '@/AppState.js';
 import { eventsService } from '@/services/EventsService.js';
+import { ticketsService } from '@/services/TicketsService.js';
 import { logger } from '@/utils/Logger.js';
 import { Pop } from '@/utils/Pop.js';
 import { computed, onMounted } from 'vue';
@@ -10,10 +11,14 @@ import { useRoute } from 'vue-router';
 const route = useRoute()
 
 const account = computed(() => AppState.account)
-
+const tickets = computed(() => AppState.ticketProfile)
 const event = computed(() => AppState.activeEvent)
 
-onMounted(() => getEventById())
+onMounted(() => {
+
+    getTicketsByEventId()
+    getEventById()
+})
 
 async function getEventById() {
     try {
@@ -34,6 +39,33 @@ async function cancelEvent() {
         logger.log('Could not cancel event', error)
     }
 }
+
+async function getTicketsByEventId() {
+    try {
+        await ticketsService.getTicketsByEventId(route.params.eventId)
+    }
+    catch (error) {
+        Pop.error(error);
+        logger.log('Could not get Ticket!', error)
+    }
+}
+
+async function createTicket() {
+    try {
+        const ticketData = { eventId: route.params.eventId }
+        await ticketsService.createTicket(ticketData)
+    }
+    catch (error) {
+        Pop.error(error);
+        logger.log('Could not create ticket', error)
+    }
+}
+
+
+
+// function ticketCounter() {
+//     event.value.ticketCount -= event.value.capacity
+// }
 
 
 
@@ -69,11 +101,11 @@ async function cancelEvent() {
                             <div class="card-body">
                                 <p class="mb-0">Interested in going?</p>
                                 <p>Grab a ticket!</p>
-                                <button class="btn btn-primary w-75">Attend</button>
+                                <button @click="createTicket()" class="btn btn-primary w-75">Attend</button>
                             </div>
                         </div>
                         <div class="text-end">
-                            <p>{{ event.capacity }} spots left</p>
+                            <p> {{ event.ticketCount }} spots left</p>
                         </div>
                     </div>
                     <div class="d-flex justify-content-between">
@@ -83,14 +115,12 @@ async function cancelEvent() {
                             <b>Location</b>
                             <p><i class="mdi mdi-map-marker-plus"></i> {{ event.location }}</p>
                         </div>
-                        <div class="col-5 text-end">
+                        <div class="col-3 text-center">
                             <b>Attendees</b>
                             <div class="card">
-                                <div class="card-body">
-                                    <p> Joe Bob</p>
-                                    <p> Bob Joe</p>
-                                    <p> Jok Mok</p>
-                                    <p> Lok Slo</p>
+                                <div v-for="ticket in tickets" :key="ticket.id" class="card-body">
+                                    <img :src="ticket.profile.picture" alt="" class="profile-img">
+                                    <p>{{ ticket.profile.name }}</p>
                                 </div>
                             </div>
                         </div>
@@ -128,5 +158,10 @@ async function cancelEvent() {
     width: 100%;
     height: 300px;
 
+}
+
+.profile-img {
+    width: 30%;
+    border-radius: 50%;
 }
 </style>
