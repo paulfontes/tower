@@ -101,91 +101,86 @@ async function createTicket() {
 
 <template>
     <article class="container">
-        <section class="row">
+        <section v-if="event" class="row">
             <!-- <div v-for="event in event" :key="event.id"> -->
-            <div v-if="event">
-                <div class="col-12">
-                    <img :src="event.coverImg" alt="" class="img-fluid active-event-img rounded mt-5">
-                </div>
-                <section class="row justify">
-                    <div class="col-3">
+            <div class="col-12">
+                <img :src="event.coverImg" alt="" class="img-fluid active-event-img rounded mt-5">
+            </div>
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-3">
                         <h2>{{ event.name }}</h2>
                     </div>
-                    <div class="col-2 text-center mt-2">
+                    <div class="col-md-2 text-center mt-2">
                         <span class="bg bg-primary rounded p-1">{{ event.type }}</span>
                     </div>
-                    <div class="col-6 text-end mt-2">
+                    <div class="col-md-6 text-end mt-2">
                         <button v-if="event.creatorId == account?.id" @click="cancelEvent()"
                             class="btn btn-outline-red">
                             {{ event.isCanceled ? 'Continue Event' : 'Cancel Event' }}
                         </button>
 
                     </div>
-                    <div class="col-8">
-                        <p>{{ event.description }}</p>
-                    </div>
-                    <div class="col-4 pt-5 text-center">
-                        <div class="card">
-                            <div class="card-body">
-                                <p class="mb-0">Interested in going?</p>
-                                <p>Grab a ticket!</p>
-                                <div v-if="event.isCanceled">
-                                    <b>EVENT HAS BEEN CANCELED</b>
-                                </div>
-                                <div v-if="event.capacity - event.ticketCount == 0">
-                                    <p>Sold Out</p>
-                                </div>
-                                <div v-if="isGoing">
-                                    <b>You are Attending!</b>
-                                </div>
-                                <div v-if="account">
-                                    <button v-if="!event.isCanceled && event.capacity - event.ticketCount > 0"
-                                        @click="createTicket()" class="btn btn-primary w-75">Attend</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="text-end">
-                            <p> {{ event.capacity - event.ticketCount }} spots left</p>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <div class="col-md-5">
-                            <b>Date and Time</b>
-                            <p> <i class="mdi mdi-calendar"></i> Starts {{ event.startDate }}</p>
-                            <b>Location</b>
-                            <p><i class="mdi mdi-map-marker-plus"></i> {{ event.location }}</p>
-                            <CommentForm />
-                            <div class="row border p-3">
-                                <div v-for="comment in comments" :key="comment.body" class="card g-2">
-                                    <div class="card-body">
-                                        <div class="text-end">
-                                            <img :src="comment.creator.picture" alt="" class="comment-img">
-                                            <p>{{ comment.creator.name }}</p>
-                                        </div>
-                                        <p class=" w-75 mb-5 pb-5">{{ comment.body }}</p>
-                                        <button @click="deleteComment(comment.id)"
-                                            class="btn btn-outline-danger">Delete</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3 text-center">
-                            <div class="row">
-                                <b>Attendees</b>
-                                <div class="card">
-                                    <div v-for="ticket in tickets" :key="ticket.id" class="card-body">
-                                        <img :src="ticket.profile.picture" alt="" class="profile-img">
-                                        <p>{{ ticket.profile.name }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
+                </div>
+                <p>{{ event.description }}</p>
             </div>
-            <!-- </div> -->
+            <div class="col-md-4 pt-5 text-center">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="mb-0">Interested in going?</p>
+                        <p>Grab a ticket!</p>
+                        <div v-if="event.isCanceled">
+                            <b>EVENT HAS BEEN CANCELED</b>
+                        </div>
+                        <div v-if="event.capacity - event.ticketCount == 0">
+                            <p>Sold Out</p>
+                        </div>
+                        <div v-if="isGoing">
+                            <b>You are Attending!</b>
+                        </div>
+                        <div v-if="account">
+                            <button v-if="!event.isCanceled && event.capacity - event.ticketCount > 0"
+                                @click="createTicket()" class="btn btn-primary w-75">Attend</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-end">
+                    <p> {{ event.capacity - event.ticketCount }} spots left</p>
+                </div>
+            </div>
+            <div class="row justify-content-between">
+                <div class="col-md-5 col-12">
+                    <b>Date and Time</b>
+                    <p> <i class="mdi mdi-calendar"></i> Starts {{ event.startDate }}</p>
+                    <b>Location</b>
+                    <p><i class="mdi mdi-map-marker-plus"></i> {{ event.location }}</p>
+                    <CommentForm />
+                    <div class="row border p-3">
+                        <div v-for="comment in comments" :key="comment.body" class="card col-12 g-2">
+                            <div class="card-body">
+                                <div class="text-end">
+                                    <img :src="comment.creator.picture" alt="" class="comment-img">
+                                    <p>{{ comment.creator.name }}</p>
+                                </div>
+                                <p class=" w-75 mb-5 pb-5">{{ comment.body }}</p>
+                                <button @click="deleteComment(comment.id)"
+                                    class="btn btn-outline-danger">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-12 text-center">
+                    <b>Attendees</b>
+                    <div class="card">
+                        <div v-for="ticket in tickets" :key="ticket.id" class="card-body">
+                            <img :src="ticket.profile.picture" alt="" class="profile-img">
+                            <p>{{ ticket.profile.name }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
+
     </article>
 </template>
 

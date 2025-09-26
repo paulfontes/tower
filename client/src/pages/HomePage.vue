@@ -57,7 +57,7 @@ async function getEvents() {
 <template>
   <article class="container-fluid background-img flex-wrap align-content-end">
     <section class="row flex-wrap align-content-end">
-      <div class="col-5 text-white mb-5 ms-5 pb-5 ps-5">
+      <div class="col-md-5 col-8 text-white mb-5 ms-5 pb-5 ps-5">
         <h1>Lorem ipsum dolor sit amet.</h1>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam vitae necessitatibus pariatur dolor veniam
         nihil, dolorem ipsum qui dolorum explicabo rerum eligendi vel expedita fuga ea culpa assumenda reiciendis
