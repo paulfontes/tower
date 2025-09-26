@@ -15,5 +15,6 @@ export class TowerEvent {
         this.type = data.type
         this.creator = data.creator
         this.ticketCount = data.ticketCount
+        this.commentCount = data.commentCount
     }
 }

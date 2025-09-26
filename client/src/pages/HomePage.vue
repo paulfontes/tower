@@ -103,7 +103,7 @@ async function getEvents() {
   </main>
   <section class="container mt-5">
     <h3>Upcoming Events</h3>
-    <section v-if="account" class="row g-3 mt-2">
+    <section class="row g-3 mt-2">
       <UpcomingEvents v-for="event in events" :key="event.id" :event="event" />
     </section>
   </section>
@@ -113,7 +113,7 @@ async function getEvents() {
 .background-img {
   background-image: url(https://images.unsplash.com/photo-1499540633125-484965b60031?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D);
   width: 100%;
-  height: 30em;
+  min-height: 30em;
   // object-fit: cover;
   // aspect-ratio: 1/1;
   background-size: cover;

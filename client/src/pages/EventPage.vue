@@ -1,5 +1,7 @@
 <script setup>
 import { AppState } from '@/AppState.js';
+import CommentForm from '@/components/CommentForm.vue';
+import { commentsService } from '@/services/CommentsService.js';
 import { eventsService } from '@/services/EventsService.js';
 import { ticketsService } from '@/services/TicketsService.js';
 import { logger } from '@/utils/Logger.js';
@@ -14,12 +16,26 @@ const account = computed(() => AppState.account)
 const tickets = computed(() => AppState.ticketProfile)
 const event = computed(() => AppState.activeEvent)
 const isGoing = computed(() => tickets.value.some(ticket => ticket.accountId == account.value?.id))
+const comments = computed(() => AppState.comments)
+// const commentProfiles = computed(() => AppState.commentProfile)
 
 onMounted(() => {
 
     getTicketsByEventId()
     getEventById()
+    getCommentsByEventId()
 })
+
+async function getCommentsByEventId() {
+    try {
+
+        await commentsService.getCommentsByEventId(route.params.eventId)
+    }
+    catch (error) {
+        Pop.error(error);
+        logger.error('Could not get comments', error)
+    }
+}
 
 async function getEventById() {
     try {
@@ -58,16 +74,15 @@ async function createTicket() {
         }
         const ticketData = { eventId: route.params.eventId }
         await ticketsService.createTicket(ticketData)
-        event.value.capacity -= event.value.ticketCount
-        return event.value.capacity
+        // NOTE don't need to do this
+        // event.value.capacity -= event.value.ticketCount
+        // return event.value.capacity
     }
     catch (error) {
         Pop.error(error);
         logger.log('Could not create ticket', error)
     }
 }
-
-
 
 
 
@@ -107,51 +122,44 @@ async function createTicket() {
                                 <div v-if="event.isCanceled">
                                     <b>EVENT HAS BEEN CANCELED</b>
                                 </div>
-                                <div v-if="event.capacity == 0">
+                                <div v-if="event.capacity - event.ticketCount == 0">
                                     <p>Sold Out</p>
                                 </div>
                                 <div v-if="isGoing">
                                     <b>You are Attending!</b>
                                 </div>
-                                <div v-else-if="account">
-                                    <button v-if="!event.isCanceled" @click="createTicket()"
-                                        class="btn btn-primary w-75">Attend</button>
+                                <div v-if="account">
+                                    <button v-if="!event.isCanceled && event.capacity - event.ticketCount > 0"
+                                        @click="createTicket()" class="btn btn-primary w-75">Attend</button>
                                 </div>
                             </div>
                         </div>
                         <div class="text-end">
-                            <p> {{ event.capacity }} spots left</p>
+                            <p> {{ event.capacity - event.ticketCount }} spots left</p>
                         </div>
                     </div>
                     <div class="d-flex justify-content-between">
-                        <div class="col-5">
+                        <div class="col-md-5">
                             <b>Date and Time</b>
                             <p> <i class="mdi mdi-calendar"></i> Starts {{ event.startDate }}</p>
                             <b>Location</b>
                             <p><i class="mdi mdi-map-marker-plus"></i> {{ event.location }}</p>
-                            <div class="col-7">
-                                <p>See what folks are saying...</p>
-                                <div class="card">
-                                    <div class="card-body text-end">
-                                        <textarea class="w-100" name="" id=""
-                                            placeholder="Tell the people..."></textarea>
-                                        <button>Post Comment</button>
-                                    </div>
-                                    <section class="row">
-                                        <div class="col-12">
-                                            <div class="card m-2">
-                                                <div class="card-body"></div>
-                                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima
-                                                    repellat
-                                                    quo
-                                                    totam! Unde, architecto! </p>
-                                            </div>
+                            <CommentForm />
+                            <div class="row border p-3">
+                                <div v-for="comment in comments" :key="comment.body" class="card g-2">
+                                    <div class="card-body">
+                                        <div class="text-end">
+                                            <img :src="comment.creator.picture" alt="" class="comment-img">
+                                            <p>{{ comment.creator.name }}</p>
+
                                         </div>
-                                    </section>
+                                        <p class=" w-75">{{ comment.body }}</p>
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-3 text-center">
+                        <div class="col-md-3 text-center">
                             <div class="row">
                                 <b>Attendees</b>
                                 <div class="card">
@@ -183,6 +191,11 @@ async function createTicket() {
 
 .profile-img {
     width: 30%;
+    border-radius: 50%;
+}
+
+.comment-img {
+    height: 40px;
     border-radius: 50%;
 }
 </style>
