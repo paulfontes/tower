@@ -94,6 +94,7 @@ async function createTicket() {
                             class="btn btn-outline-red">
                             {{ event.isCanceled ? 'Continue Event' : 'Cancel Event' }}
                         </button>
+
                     </div>
                     <div class="col-8">
                         <p>{{ event.description }}</p>
@@ -103,11 +104,19 @@ async function createTicket() {
                             <div class="card-body">
                                 <p class="mb-0">Interested in going?</p>
                                 <p>Grab a ticket!</p>
+                                <div v-if="event.isCanceled">
+                                    <b>EVENT HAS BEEN CANCELED</b>
+                                </div>
+                                <div v-if="event.capacity == 0">
+                                    <p>Sold Out</p>
+                                </div>
                                 <div v-if="isGoing">
                                     <b>You are Attending!</b>
                                 </div>
-                                <button v-else-if="account" @click="createTicket()"
-                                    class="btn btn-primary w-75">Attend</button>
+                                <div v-else-if="account">
+                                    <button v-if="!event.isCanceled" @click="createTicket()"
+                                        class="btn btn-primary w-75">Attend</button>
+                                </div>
                             </div>
                         </div>
                         <div class="text-end">
@@ -167,7 +176,9 @@ async function createTicket() {
 .active-event-img {
     width: 100%;
     height: 300px;
-
+    object-fit: cover;
+    object-position: center;
+    aspect-ratio: 1/1
 }
 
 .profile-img {

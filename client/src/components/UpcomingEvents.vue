@@ -12,7 +12,7 @@ const props = defineProps({
 
 
 <template>
-    <div class="col-4">
+    <div class="col-md-4">
         <RouterLink :to="{ name: 'Event', params: { eventId: event.id } }">
             <div class="card">
                 <div class="card-img-top">
@@ -22,7 +22,7 @@ const props = defineProps({
                     <b>{{ event.name }}</b>
                     <p class="text-success fw-medium mb-0">Hosted by {{ event.creator.name }}</p>
                     <p class="mb-0"> {{ event.startDate }} - {{ event.location }}</p>
-                    <p class="mb-0">125 attending</p>
+                    <p class="mb-0">{{ event.ticketCount }} Attending</p>
                 </div>
             </div>
         </RouterLink>
@@ -37,5 +37,10 @@ const props = defineProps({
     object-position: center;
     aspect-ratio: 1/1;
     object-fit: cover;
+}
+
+a {
+    color: unset;
+    text-decoration: none;
 }
 </style>

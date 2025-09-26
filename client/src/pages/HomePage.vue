@@ -92,7 +92,7 @@ async function getEvents() {
   <main class="container mt-5">
     <h3>Explore top categories</h3>
     <section class="row justify-content-center mt-2">
-      <div v-for="category in categories" :key="category.name" class="col-2 text-center">
+      <div v-for="category in categories" :key="category.name" class="col-md-2 text-center">
         <div class="card">
           <div @click="selectedCategory = category.name" class="card-body p-0 m-0" role="button">
             <b class="text-capitalize">{{ category.name }}</b>

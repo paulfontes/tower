@@ -49,10 +49,10 @@ async function deleteTicket(ticketId) {
       <p>{{ account.email }}</p>
       <div class="container-fluid">
         <section class="row">
-          <div v-for="ticket in ticketEvents" :key="ticket.id" class="col-4 d-flex justify-content-center g-2">
+          <div v-for="ticket in ticketEvents" :key="ticket.id" class="col-md-4 d-flex justify-content-center g-2">
             <UpcomingEvents :event="ticket.event" />
             <div>
-              <button @click="deleteTicket(ticket.id)">Leave</button>
+              <button @click="deleteTicket(ticket.id)" class="btn btn-outline-pink">Leave</button>
             </div>
           </div>
         </section>
