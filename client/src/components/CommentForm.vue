@@ -32,7 +32,7 @@ async function createComment() {
 
 <template>
     <form @submit.prevent="createComment()">
-        <div class="col-7">
+        <div class="col-12">
             <p>See what folks are saying...</p>
             <div class="card">
                 <div class="card-body">

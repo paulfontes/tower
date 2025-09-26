@@ -103,7 +103,7 @@ async function createTicket() {
     <article class="container">
         <section v-if="event" class="row">
             <!-- <div v-for="event in event" :key="event.id"> -->
-            <div class="col-12">
+            <div class="col-12 mb-4">
                 <img :src="event.coverImg" alt="" class="img-fluid active-event-img rounded mt-5">
             </div>
             <div class="col-md-8">
@@ -149,13 +149,13 @@ async function createTicket() {
                 </div>
             </div>
             <div class="row justify-content-between">
-                <div class="col-md-5 col-12">
+                <div class="col-md-7 col-12">
                     <b>Date and Time</b>
                     <p> <i class="mdi mdi-calendar"></i> Starts {{ event.startDate }}</p>
                     <b>Location</b>
                     <p><i class="mdi mdi-map-marker-plus"></i> {{ event.location }}</p>
                     <CommentForm />
-                    <div class="row border p-3">
+                    <div class="row border mt-5 p-3">
                         <div v-for="comment in comments" :key="comment.body" class="card col-12 g-2">
                             <div class="card-body">
                                 <div class="text-end">
@@ -163,7 +163,7 @@ async function createTicket() {
                                     <p>{{ comment.creator.name }}</p>
                                 </div>
                                 <p class=" w-75 mb-5 pb-5">{{ comment.body }}</p>
-                                <button @click="deleteComment(comment.id)"
+                                <button v-if="comment.creatorId == account.id" @click="deleteComment(comment.id)"
                                     class="btn btn-outline-danger">Delete</button>
                             </div>
                         </div>
