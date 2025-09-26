@@ -26,6 +26,16 @@ onMounted(() => {
     getCommentsByEventId()
 })
 
+async function deleteComment(commentId) {
+    try {
+        await commentsService.deleteComment(commentId)
+    }
+    catch (error) {
+        Pop.error(error);
+        logger.error('Could not get delete comment', error)
+    }
+}
+
 async function getCommentsByEventId() {
     try {
 
@@ -151,10 +161,10 @@ async function createTicket() {
                                         <div class="text-end">
                                             <img :src="comment.creator.picture" alt="" class="comment-img">
                                             <p>{{ comment.creator.name }}</p>
-
                                         </div>
-                                        <p class=" w-75">{{ comment.body }}</p>
-
+                                        <p class=" w-75 mb-5 pb-5">{{ comment.body }}</p>
+                                        <button @click="deleteComment(comment.id)"
+                                            class="btn btn-outline-danger">Delete</button>
                                     </div>
                                 </div>
                             </div>
