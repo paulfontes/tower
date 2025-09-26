@@ -1,3 +1,4 @@
+import { BadRequest, Forbidden } from "@bcwdev/auth0provider/lib/Errors.js"
 import { dbContext } from "../db/DbContext.js"
 
 class TowerEventsService {
@@ -20,12 +21,19 @@ class TowerEventsService {
 
         return eventById
     }
-    async editEvent(eventId, updateData) {
+    async editEvent(eventId, updateData, userInfo) {
         const originalEvent = await dbContext.TowerEvents.findById(eventId)
 
-        if (originalEvent == null) {
-            throw new Error(`Invalid Event Id: ${eventId}`)
-        }
+        if (originalEvent == null) throw new Error(`Invalid Event Id: ${eventId}`)
+
+        if (userInfo.id != originalEvent.creatorId) { throw new Forbidden('WHAT ARE YOU DOING YOU LITTLE RAT!!🐀🔫') }
+
+        if (originalEvent.isCanceled) throw new BadRequest(`${originalEvent.name} has been canceled!`)
+
+
+
+
+
         originalEvent.description = updateData.description || originalEvent.description
 
         originalEvent.name = updateData.name ?? originalEvent.name
@@ -33,11 +41,13 @@ class TowerEventsService {
         await originalEvent.save()
         return originalEvent
     }
-    async cancelEvent(eventId) {
+    async cancelEvent(eventId, userInfo) {
         const event = await dbContext.TowerEvents.findById(eventId)
+        if (userInfo.id != event.creatorId) {
+            throw new Forbidden('WHAT ARE YOU DOING YOU LITTLE RAT!!🐀🔫')
+        }
 
         event.isCanceled = !event.isCanceled
-
         await event.save()
         return event
     }
