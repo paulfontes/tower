@@ -89,7 +89,7 @@ async function getEvents() {
       </div>
     </section>
   </main>
-  <main class="container mt-5">
+  <main class="container-fluid mt-5">
     <h3>Explore top categories</h3>
     <section class="row justify-content-center mt-2">
       <div v-for="category in categories" :key="category.name" class="col-md-2 text-center">
@@ -101,7 +101,7 @@ async function getEvents() {
       </div>
     </section>
   </main>
-  <section class="container mt-5">
+  <section class="container-fluid mt-5">
     <h3>Upcoming Events</h3>
     <section class="row g-3 mt-2">
       <UpcomingEvents v-for="event in events" :key="event.id" :event="event" />
