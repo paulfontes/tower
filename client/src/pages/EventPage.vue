@@ -144,7 +144,7 @@ async function createTicket() {
                         </div>
                     </div>
                 </div>
-                <div class="text-end">
+                <div v-if="!event.isCanceled" class="text-end">
                     <p> {{ event.capacity - event.ticketCount }} spots left</p>
                 </div>
             </div>
