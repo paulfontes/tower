@@ -6,17 +6,21 @@ import { eventsService } from '@/services/EventsService.js';
 import { ticketsService } from '@/services/TicketsService.js';
 import { logger } from '@/utils/Logger.js';
 import { Pop } from '@/utils/Pop.js';
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
 
 
 const route = useRoute()
 
+const howManySpotsLeft = computed(() => event.value.capacity - event.value.ticketCount)
 const account = computed(() => AppState.account)
 const tickets = computed(() => AppState.ticketProfile)
 const event = computed(() => AppState.activeEvent)
 const isGoing = computed(() => tickets.value.some(ticket => ticket.accountId == account.value?.id))
 const comments = computed(() => AppState.comments)
+
+
+
 // const commentProfiles = computed(() => AppState.commentProfile)
 
 onMounted(() => {
@@ -67,6 +71,7 @@ async function cancelEvent() {
     }
 }
 
+
 async function getTicketsByEventId() {
     try {
         await ticketsService.getTicketsByEventId(route.params.eventId)
@@ -115,7 +120,7 @@ async function createTicket() {
                         <span class="bg bg-primary rounded p-1">{{ event.type }}</span>
                     </div>
                     <div class="col-md-6 text-end mt-2">
-                        <button v-if="event.creatorId == account?.id" @click="cancelEvent()"
+                        <button v-if="account && event.creatorId == account.id" @click="cancelEvent()"
                             class="btn btn-outline-red">
                             {{ event.isCanceled ? 'Continue Event' : 'Cancel Event' }}
                         </button>
@@ -145,7 +150,7 @@ async function createTicket() {
                     </div>
                 </div>
                 <div v-if="!event.isCanceled" class="text-end">
-                    <p> {{ event.capacity - event.ticketCount }} spots left</p>
+                    <p> {{ howManySpotsLeft }} spots left</p>
                 </div>
             </div>
             <div class="row justify-content-between">
@@ -154,17 +159,21 @@ async function createTicket() {
                     <p> <i class="mdi mdi-calendar"></i> Starts {{ event.startDate }}</p>
                     <b>Location</b>
                     <p><i class="mdi mdi-map-marker-plus"></i> {{ event.location }}</p>
-                    <CommentForm />
+                    <CommentForm v-if="account" />
                     <div class="row border mt-5 p-3">
-                        <div v-for="comment in comments" :key="comment.body" class="card col-12 g-2">
+                        <div v-for="comment in comments" :key="comment.id" class="card col-12 g-2">
                             <div class="card-body">
                                 <div class="text-end">
                                     <img :src="comment.creator.picture" alt="" class="comment-img">
                                     <p>{{ comment.creator.name }}</p>
                                 </div>
+
                                 <p class=" w-75 mb-5 pb-5">{{ comment.body }}</p>
-                                <button v-if="comment.creatorId == account.id" @click="deleteComment(comment.id)"
-                                    class="btn btn-outline-danger">Delete</button>
+                                <div>
+
+                                    <button v-if="account?.id == comment.creatorId" @click="deleteComment(comment.id)"
+                                        class="btn btn-outline-danger">Delete</button>
+                                </div>
                             </div>
                         </div>
                     </div>

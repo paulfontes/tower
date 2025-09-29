@@ -22,7 +22,7 @@ class TowerEventsService {
         return eventById
     }
     async editEvent(eventId, updateData, userInfo) {
-        const originalEvent = await dbContext.TowerEvents.findById(eventId)
+        const originalEvent = await this.getEventById(eventId)
 
         if (originalEvent == null) throw new Error(`Invalid Event Id: ${eventId}`)
 
@@ -42,7 +42,7 @@ class TowerEventsService {
         return originalEvent
     }
     async cancelEvent(eventId, userInfo) {
-        const event = await dbContext.TowerEvents.findById(eventId)
+        const event = await this.getEventById(eventId)
         if (userInfo.id != event.creatorId) {
             throw new Forbidden('WHAT ARE YOU DOING YOU LITTLE RAT!!🐀🔫')
         }

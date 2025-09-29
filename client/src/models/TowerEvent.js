@@ -14,6 +14,9 @@ export class TowerEvent {
         this.isCanceled = data.isCanceled
         this.type = data.type
         this.creator = data.creator
+        // ticketCount comes from a virtual populate on the server. Some responses
+        // (like the cancel toggle) may return the raw document without the
+        // populated count. Default to 0 to avoid NaN when calculating spots left.
         this.ticketCount = data.ticketCount
         this.commentCount = data.commentCount
     }
