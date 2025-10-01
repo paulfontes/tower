@@ -12,7 +12,7 @@ import { RouterView } from 'vue-router';
     <RouterView />
   </main>
   <footer class=" text-center">
-    Made with <i class="mdi mdi-heart text-pink"></i> by Paul
+    Made with Blood Sweat and Tears <i class="mdi mdi-water text-pink"></i> by Paul
   </footer>
 </template>
 
