@@ -73,7 +73,7 @@ async function getEvents() {
         <div class="card">
           <div class="card-body">
             <h5> <i class="mdi mdi-magnify"></i> Discover events you're interested in</h5>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod odit quam nihil beatae laudantium.</p>
+            <p>Lorem ipsums dolor sit amet consectetur adipisicing elit. Quod odit quam nihil beatae laudantium.</p>
             <a href="">Discover events</a>
           </div>
         </div>
