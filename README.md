@@ -4,9 +4,9 @@ Tower is a small web application built to [briefly explain purpose — e.g., man
 
 ## Tech Stack
 - JavaScript
-- [Framework if any]
+- Vue
 - HTML / CSS
-- [Backend / API if applicable]
+- Node, MongoDB, Axios
 
 ## Features
 - [Feature 1]
@@ -23,5 +23,5 @@ Tower is a small web application built to [briefly explain purpose — e.g., man
 2. Install dependencies
 3. Run the app locally
 
-## Screenshots
-(Add 1–2 screenshots here)
+## preview
+https://youtu.be/FdSB9GF7V3Y
