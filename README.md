@@ -1,6 +1,6 @@
 # Tower
 
-Tower is a small web application built to [briefly explain purpose — e.g., manage X, track Y, practice Z].
+Tower is a small web application built to connect people with different events in their area.
 
 ## Tech Stack
 - JavaScript
@@ -9,9 +9,9 @@ Tower is a small web application built to [briefly explain purpose — e.g., man
 - Node, MongoDB, Axios
 
 ## Features
-- [Feature 1]
-- [Feature 2]
-- [Feature 3]
+- Event Creation and Management
+- Users able to join events and comment section of the event
+- Displays a list of upcoming events 
 
 ## What I Learned
 - Structuring a small application from scratch
